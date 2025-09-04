@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "modules",
+  "info": {
+    "singularName": "module",
+    "pluralName": "modules",
+    "displayName": "Module"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string",
+      "required": true
+    },
+    "Details": {
+      "type": "blocks",
+      "required": true
+    },
+    "NumberOfClasses": {
+      "type": "integer",
+      "required": true
+    },
+    "TopicsCovered": {
+      "type": "text",
+      "required": true
+    },
+    "course": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::course.course",
+      "inversedBy": "module"
+    }
+  }
+}
