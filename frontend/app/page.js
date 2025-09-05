@@ -18,7 +18,7 @@ export default function Home() {
       fetchCourses(token);
       fetchUserData(token);
     }
-  }, []); // Empty dependency array to run only on mount
+  }, []);
 
   const fetchUserData = async (token) => {
     try {
@@ -29,6 +29,7 @@ export default function Home() {
       if (data) {
         localStorage.setItem('user', JSON.stringify(data));
         setUser(data);
+        console.log('Fetched user data:', data); // Debug user data
       }
     } catch (err) {
       console.error('Error fetching user data:', err);
@@ -41,10 +42,11 @@ export default function Home() {
       const url = user && user.role && ['Student', 'Social Media Manager/Developer'].includes(user.role.name)
         ? 'http://localhost:1337/api/courses?populate=*'
         : 'http://localhost:1337/api/courses';
-      console.log('Fetching from:', url);
+      console.log('Fetch URL:', url); // Debug URL
       const response = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log('Response status:', response.status); // Debug status
       const data = await response.json();
       console.log('API Response:', data);
       if (data.data && Array.isArray(data.data)) {
@@ -65,7 +67,7 @@ export default function Home() {
   const handleLogin = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData));
     const token = localStorage.getItem('token') || '';
-    localStorage.setItem('token', token); // Ensure token is consistent
+    localStorage.setItem('token', token);
     setUser(userData);
     fetchCourses(token);
     fetchUserData(token);
@@ -83,46 +85,46 @@ export default function Home() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-gray-100 p-4">
-      <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
-        <h1 className="text-2xl font-bold mb-4">Welcome, {user.username}!</h1>
-        <p className="mb-4">Role: {user.role ? user.role.name : 'Normal User'}</p>
+    <div className="flex min-h-screen flex-col items-center bg-gray-300 p-4 sm:p-6 lg:p-8">
+      <div className="w-full max-w-4xl bg-gray-50 shadow-lg rounded-lg p-4 sm:p-6 lg:p-8">
+        <h1 className="text-2xl font-bold mb-4 text-gray-900 sm:text-3xl">Welcome, {user.username || 'Guest'}!</h1>
+        <p className="mb-4 text-gray-900 sm:text-lg">Role: {user.role ? user.role.name : 'Normal User'}</p>
         <button
           onClick={handleLogout}
-          className="mb-4 py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700"
+          className="mb-4 py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 sm:py-2.5 sm:px-6"
         >
           Logout
         </button>
 
-        {loading && <p className="text-center">Loading courses...</p>}
-        {error && <p className="text-center text-red-500">{error}</p>}
+        {loading && <p className="text-center text-gray-900">Loading courses...</p>}
+        {error && <p className="text-center text-red-600">Error: {error}</p>}
         {!loading && !error && (
           <div>
-            <h2 className="text-xl font-semibold mb-2">Courses</h2>
+            <h2 className="text-xl font-semibold mb-2 text-gray-900 sm:text-2xl">Courses</h2>
             {courses.length === 0 ? (
-              <p>No courses available.</p>
+              <p className="text-gray-900">No courses available.</p>
             ) : (
               <ul className="space-y-4">
                 {courses.map((course) => (
-                  <li key={course.id} className="border p-4 rounded-md">
+                  <li key={course.id} className="border p-4 rounded-md sm:p-5">
                     {course.attributes && user.role && ['Student', 'Social Media Manager/Developer'].includes(user.role.name) ? (
                       <>
-                        <h3 className="text-lg font-medium">{course.attributes.Title}</h3>
-                        <p className="text-gray-600">
+                        <h3 className="text-lg font-medium text-gray-900 sm:text-xl">{course.attributes.Title}</h3>
+                        <p className="text-gray-800 sm:text-base">
                           {course.attributes.Description?.[0]?.children?.[0]?.text || 'No description'}
                         </p>
-                        <h4 className="mt-2 font-medium">Modules:</h4>
-                        <ul className="ml-4 list-disc">
+                        <h4 className="mt-2 font-medium text-gray-900 sm:text-lg">Modules:</h4>
+                        <ul className="ml-4 list-disc sm:ml-6">
                           {course.attributes.modules && course.attributes.modules.data && course.attributes.modules.data.map((module) => (
-                            <li key={module.id}>
+                            <li key={module.id} className="sm:text-base">
                               {module.attributes.Name} - {module.attributes.NumberOfClasses} classes
-                              <p className="text-sm text-gray-500">{module.attributes.Details}</p>
+                              <p className="text-sm text-gray-800 sm:text-base">{module.attributes.Details}</p>
                             </li>
-                          )) || <p>No modules available</p>}
+                          )) || <p className="text-gray-900">No modules available</p>}
                         </ul>
                       </>
                     ) : (
-                      <p className="text-gray-600">
+                      <p className="text-gray-800 sm:text-base">
                         {course.attributes?.Title ? `${course.attributes.Title} - Summary available only.` : 'Course data unavailable.'}
                       </p>
                     )}
