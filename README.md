@@ -13,3 +13,7 @@ A role-based learning management system with authentication and dynamic content.
 - User authentication and registration
 - Role-based course views (Normal User, Student, Social Media Manager/Developer)
 - Responsive design
+
+## Notes
+- Known issue: Role-based course details (e.g., modules) are not displaying due to a "policy failed" error, likely from Strapi permissions. The frontend uses username as a role proxy, but full functionality requires further Strapi configuration.
+- Open to feedback for improvement.

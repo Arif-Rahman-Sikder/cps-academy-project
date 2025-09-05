@@ -39,7 +39,7 @@ export default function Home() {
   const fetchCourses = async (token) => {
     setLoading(true);
     try {
-      const url = user && user.role && ['Student', 'Social Media Manager/Developer'].includes(user.role.name)
+      const url = user && user.username && ['Student', 'Social Media Manager/Developer'].includes(user.username)
         ? 'http://localhost:1337/api/courses?populate=*'
         : 'http://localhost:1337/api/courses';
       console.log('Fetch URL:', url); // Debug URL
@@ -88,7 +88,7 @@ export default function Home() {
     <div className="flex min-h-screen flex-col items-center bg-gray-300 p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-4xl bg-gray-50 shadow-lg rounded-lg p-4 sm:p-6 lg:p-8">
         <h1 className="text-2xl font-bold mb-4 text-gray-900 sm:text-3xl">Welcome, {user.username || 'Guest'}!</h1>
-        <p className="mb-4 text-gray-900 sm:text-lg">Role: {user.role ? user.role.name : 'Normal User'}</p>
+        <p className="mb-4 text-gray-900 sm:text-lg">Role: {user.username || 'Normal User'}</p>
         <button
           onClick={handleLogout}
           className="mb-4 py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 sm:py-2.5 sm:px-6"
@@ -107,7 +107,7 @@ export default function Home() {
               <ul className="space-y-4">
                 {courses.map((course) => (
                   <li key={course.id} className="border p-4 rounded-md sm:p-5">
-                    {course.attributes && user.role && ['Student', 'Social Media Manager/Developer'].includes(user.role.name) ? (
+                    {course.attributes && user.username && ['Student', 'Social Media Manager/Developer'].includes(user.username) ? (
                       <>
                         <h3 className="text-lg font-medium text-gray-900 sm:text-xl">{course.attributes.Title}</h3>
                         <p className="text-gray-800 sm:text-base">
