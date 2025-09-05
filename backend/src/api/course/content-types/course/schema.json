@@ -19,9 +19,9 @@
       "type": "blocks",
       "required": true
     },
-    "module": {
+    "modules": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "oneToMany",
       "target": "api::module.module",
       "mappedBy": "course"
     }

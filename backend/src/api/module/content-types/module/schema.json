@@ -29,9 +29,9 @@
     },
     "course": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "manyToOne",
       "target": "api::course.course",
-      "inversedBy": "module"
+      "inversedBy": "modules"
     }
   }
 }
